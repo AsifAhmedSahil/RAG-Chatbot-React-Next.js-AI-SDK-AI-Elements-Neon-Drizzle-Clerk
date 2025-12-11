@@ -13,10 +13,10 @@ import {
   type PromptInputMessage,
   PromptInputSubmit,
   PromptInputTextarea,
-  PromptInputToolbar,
+  // PromptInputToolbar,
   PromptInputTools,
 } from "@/components/ai-elements/prompt-input";
-import { Response } from "@/components/ai-elements/response";
+// import { Response } from "@/components/ai-elements/response";
 import { Loader } from "@/components/ai-elements/loader";
 
 export default function RAGChatBot() {
@@ -42,7 +42,9 @@ export default function RAGChatBot() {
                         <Fragment key={`${message.id}-${i}`}>
                           <Message from={message.role}>
                             <MessageContent>
-                              <Response>{part.text}</Response>
+                              {/* <Response> */}
+                                {part.text}
+                                {/* </Response> */}
                             </MessageContent>
                           </Message>
                         </Fragment>
@@ -66,12 +68,12 @@ export default function RAGChatBot() {
             />
           </PromptInputBody>
 
-          <PromptInputToolbar>
+          {/* <PromptInputToolbar > */}
             <PromptInputTools>
               {/* model selector web search etc */}
             </PromptInputTools>
             <PromptInputSubmit />
-          </PromptInputToolbar>
+          {/* </PromptInputToolbar> */}
         </PromptInput>
       </div>
     </div>

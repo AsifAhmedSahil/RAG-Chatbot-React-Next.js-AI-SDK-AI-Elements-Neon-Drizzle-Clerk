@@ -11,7 +11,7 @@ export async function POST(req:Request) {
         messages:convertToModelMessages(messages)
     })
 
-    return result.toTextStreamResponse()
+    return result.toUIMessageStreamResponse()
     } catch (error) {
         console.error("Error streaming chat completion",error)
         return new Response("Failed to stream chat completion",{status:500})
