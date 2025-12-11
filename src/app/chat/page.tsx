@@ -13,10 +13,8 @@ import {
   type PromptInputMessage,
   PromptInputSubmit,
   PromptInputTextarea,
-  // PromptInputToolbar,
   PromptInputTools,
 } from "@/components/ai-elements/prompt-input";
-// import { Response } from "@/components/ai-elements/response";
 import { Loader } from "@/components/ai-elements/loader";
 
 export default function RAGChatBot() {
@@ -28,30 +26,28 @@ export default function RAGChatBot() {
     sendMessage({ text: message.text });
     setInput("");
   };
+
   return (
-    <div className="max-w-4xl mx-auto p-6 relative size-full h-[calc(100vh)]">
-      <div className="flex flex-col h-full">
+    <div className="max-w-4xl mx-auto p-6 h-[calc(100vh-4rem)] flex flex-col">
+      {/* Conversation scroll area */}
+      <div className="flex-1 overflow-y-auto mb-4">
         <Conversation className="h-full">
           <ConversationContent>
             {messages.map((message) => (
               <div key={message.id}>
                 {message.parts.map((part, i) => {
-                  switch (part.type) {
-                    case "text":
-                      return (
-                        <Fragment key={`${message.id}-${i}`}>
-                          <Message from={message.role}>
-                            <MessageContent>
-                              {/* <Response> */}
-                                {part.text}
-                                {/* </Response> */}
-                            </MessageContent>
-                          </Message>
-                        </Fragment>
-                      );
-                    default:
-                      return null;
+                  if (part.type === "text") {
+                    return (
+                      <Fragment key={`${message.id}-${i}`}>
+                        <Message from={message.role}>
+                          <MessageContent>
+                            {part.text}
+                          </MessageContent>
+                        </Message>
+                      </Fragment>
+                    );
                   }
+                  return null;
                 })}
               </div>
             ))}
@@ -59,23 +55,21 @@ export default function RAGChatBot() {
           </ConversationContent>
           <ConversationScrollButton />
         </Conversation>
-
-        <PromptInput onSubmit={handleSubmit} className="mt-4">
-          <PromptInputBody>
-            <PromptInputTextarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-            />
-          </PromptInputBody>
-
-          {/* <PromptInputToolbar > */}
-            <PromptInputTools>
-              {/* model selector web search etc */}
-            </PromptInputTools>
-            <PromptInputSubmit />
-          {/* </PromptInputToolbar> */}
-        </PromptInput>
       </div>
+
+      {/* Input area */}
+      <PromptInput onSubmit={handleSubmit} className="mt-2">
+        <PromptInputBody>
+          <PromptInputTextarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+        </PromptInputBody>
+        <div className="flex items-center justify-between mt-2">
+          <PromptInputTools />
+          <PromptInputSubmit />
+        </div>
+      </PromptInput>
     </div>
   );
 }
