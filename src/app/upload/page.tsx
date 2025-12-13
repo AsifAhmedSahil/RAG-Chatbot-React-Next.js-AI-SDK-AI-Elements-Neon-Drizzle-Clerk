@@ -1,9 +1,11 @@
+'use client'
+import React, { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
-import React, { useState } from "react";
+import { processPdfFile } from "./actions";
 
 export default function PDFUpload() {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,7 +15,40 @@ export default function PDFUpload() {
   } | null>(null);
 
   const handleFileUpload = async(e:React.ChangeEvent<HTMLInputElement>) =>{
-    
+    const file = e.target.files?.[0]
+    if(!file) return
+
+    setIsLoading(true)
+    setMessage(null)
+
+    try {
+      const formData = new FormData()
+      formData.append("pdf",file)
+
+      const result = await processPdfFile(formData)
+
+      if(result.success){
+        setMessage({
+          type:"success",
+          text:result.message || "pdf processed successfully"
+        })
+        e.target.value = ""
+      } else{
+        setMessage({
+          type:"error",
+          text:result.error || "Failed to processed pdf"
+        })
+      }
+      
+    } catch (error) {
+      setMessage({
+        type:"error",
+        text:"An Error Occured while processing the PDF"
+      })
+      
+    } finally{
+      setIsLoading(false)
+    }
 
   }
 
