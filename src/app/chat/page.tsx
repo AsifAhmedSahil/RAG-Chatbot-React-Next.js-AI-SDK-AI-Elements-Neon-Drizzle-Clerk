@@ -39,8 +39,11 @@ export default function RAGChatBot() {
                   if (part.type === "text") {
                     return (
                       <Fragment key={`${message.id}-${i}`}>
-                        <Message from={message.role}>
+                        <Message from={message.role}
+                        
+                        >
                           <MessageContent>
+                            
                             {part.text}
                           </MessageContent>
                         </Message>
